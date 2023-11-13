@@ -1,3 +1,8 @@
+using ControleDeTarefas.Data;
+using ControleDeTarefas.Repository;
+using ControleDeTarefas.Repository.Interfaces;
+using Microsoft.EntityFrameworkCore;
+
 namespace ControleDeTarefas
 {
     public class Program
@@ -12,6 +17,13 @@ namespace ControleDeTarefas
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddEntityFrameworkSqlServer()
+                .AddDbContext<ControleTarefasDBContext>(
+                    options => options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase"))
+                );
+
+            builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
             var app = builder.Build();
 
